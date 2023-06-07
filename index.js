@@ -10,12 +10,20 @@ if (process.argv[2] === 'production') {
     require('dotenv').config();
 }
 
+const { name } = require('ejs');
 const express = require('express');
 
+// const multer=require('multer');
+// const upload=multer({dest:'tmp_upload/'});
+const upload=require(__dirname + '/my_modules/img_upload');
 
 const app = express();
 
 app.set('view engine', 'ejs');
+
+// middleware top level
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.render('home', { name: 'GB' });
@@ -43,6 +51,35 @@ app.get('/json-sales2', (req, res) => {
     const sales = require(__dirname + '/datas/sales');
     res.render('json-sales2', { sales });
 });
+
+app.get('/try-qs',(req,res)=>{
+res.json(req.query);
+})
+
+// const urlencodedParser=express.urlencoded({extended: false});
+// const jsonParser=express.json();
+app.post('/try-post',(req,res)=>{
+    
+    res.json(req.body);
+})
+
+
+app.get('/try-post-form',(req,res)=>{
+res.render('try-post-form');
+});
+app.post('/try-post-form',(req,res)=>{
+    res.render('try-post-form',req.body);
+})
+
+app.post('/try-upload',upload.single('avatar'),(req,res)=>{
+console.log(req.file);
+res.json(req.file);
+})
+
+app.post('/try-uploads',upload.array('photo',10),(req,res)=>{
+    console.log(req.files);
+    res.json(req.files.map(f=>f.filename));
+    })
 
 app.use(express.static('public'));
 app.use(express.static('node_modules/bootstrap/dist'));

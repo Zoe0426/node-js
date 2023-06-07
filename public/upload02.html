@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .img-container {
+            display: flex;
+        }
+
+        .img-item {
+            width: 300px;
+            position: relative;
+        }
+
+        .img-item>img {
+            width: 300px;
+        }
+
+        .del {
+            color: red;
+            font-size: 25px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .right {
+            color: red;
+            font-size: 25px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .left {
+            color: red;
+            font-size: 25px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form name="form1">
+        <input type="file" name="photo" multiple onchange="uploadImg()">
+    </form>
+    <div class="img-container">
+        <!-- <div class="img-item">
+            <img src="./img/6bc91976-b857-473f-9a86-9d3c3eb6503c.jpg" alt="">
+            <div class="del"><i class="fa-solid fa-circle-xmark icon-del"></i></div>
+            <div class="right"><i class="fa-solid fa-circle-arrow-right"></i></div>
+            <div class="left"><i class="fa-solid fa-circle-arrow-left"></i></div>
+        </div>
+        <div class="img-item">
+            <img src="./img/7b10d07a-fcb9-4444-97ae-bd75dbf8e529.jpg" alt="">
+            <div class="del"><i class="fa-solid fa-circle-xmark icon-del"></i></div>
+            <div class="right"><i class="fa-solid fa-circle-arrow-right"></i></div>
+            <div class="left"><i class="fa-solid fa-circle-arrow-left"></i></div>
+        </div>
+        <div class="img-item">
+            <img src="./img/accccf86-c289-407e-828d-a1720cbb517a.jpg" alt="">
+            <div class="del"><i class="fa-solid fa-circle-xmark icon-del"></i></div>
+            <div class="right"><i class="fa-solid fa-circle-arrow-right"></i></div>
+            <div class="left"><i class="fa-solid fa-circle-arrow-left"></i></div>
+        </div> -->
+    </div>
+    <script src="https://kit.fontawesome.com/6ebf720ee8.js" crossorigin="anonymous"></script>
+    <script>
+        const container = document.querySelector('.img-container');
+
+
+        async function uploadImg() {
+            const fd = new FormData(document.form1);
+
+            const r = await fetch('/try-uploads', {
+                method: 'POST',
+                body: fd
+            });
+
+            const result = await r.json();
+
+            console.log(result);
+
+            const result1 = result.map((fn) => `
+                <div class="img-item">
+                <img src="./img/${fn}" alt="">
+                <div class="del"><i class="fa-solid fa-circle-xmark icon-del"></i></div>
+                <div class="right"><i class="fa-solid fa-circle-arrow-right"></i></div>
+                <div class="left"><i class="fa-solid fa-circle-arrow-left"></i></div>
+            </div>
+                `).join("");
+
+            document.querySelector(".img-container").innerHTML = result1;
+
+
+            const delImg = document.querySelectorAll(".img-item");
+            const delBtn = document.querySelectorAll(".icon-del");
+
+
+            const [...delImgArray] = delImg;
+            const [...delBtnArray] = delBtn;
+
+
+            // 改寫迴圈
+            delImgArray[0].addEventListener("click", (e) => {
+                console.log(e.target === delBtnArray[0]);
+                console.log('1');
+                if (e.target === delBtnArray[0]) {
+                    console.log('aaa');
+                    const imgTarget = e.currentTarget;
+                    console.log(imgTarget);
+                    imgTarget.remove();
+                }
+
+
+
+            });
+            delImgArray[1].addEventListener("click", (e) => {
+                console.log(e.target);
+                console.log('2');
+                if (e.target === delBtnArray[1]) {
+                    console.log('aaa');
+                    const imgTarget = e.currentTarget;
+                    console.log(imgTarget);
+                    imgTarget.remove();
+                }
+            });
+            delImgArray[2].addEventListener("click", (e) => {
+                console.log(e.target);
+                console.log('3');
+                if (e.target === delBtnArray[2]) {
+                    console.log('aaa');
+                    const imgTarget = e.currentTarget;
+                    console.log(imgTarget);
+                    imgTarget.remove();
+                }
+
+            });
+
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>
