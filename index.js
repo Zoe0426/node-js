@@ -79,7 +79,18 @@ res.json(req.file);
 app.post('/try-uploads',upload.array('photo',10),(req,res)=>{
     console.log(req.files);
     res.json(req.files.map(f=>f.filename));
-    })
+})
+
+app.get('/my-params1/:hello/:id',(req,res)=>{
+    res.json(req.params);
+})
+
+app.get(/^\/09\d{2}\-?\d{3}-?\d{3}$/,(req,res)=>{
+    let u =req.url.slice(1);
+    u=u.split('?')[0];
+    u=u.split('-').join("");
+res.json({u});
+})
 
 app.use(express.static('public'));
 app.use(express.static('node_modules/bootstrap/dist'));
