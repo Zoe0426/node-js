@@ -110,6 +110,10 @@ app.get(/^\/09\d{2}\-?\d{3}-?\d{3}$/,(req,res)=>{
 res.json({u});
 });
 
+
+app.use('/ab', require(__dirname + '/routes/member_list') );
+
+
 app.get('/try-sess',(req,res)=>{
     req.session.count=req.session.count || 0;
     req.session.count++;
@@ -138,7 +142,7 @@ app.get('/try-moment',(req,res)=>{
 });
 
 app.get('/try-db',async (req,res)=>{
-    const [rows] = await db.query('SELECT * FROM address_book LIMIT 2');
+    const [rows] = await db.query('SELECT * FROM mem_member LIMIT 2');
     res.json(rows);
 })
 
