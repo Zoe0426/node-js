@@ -12,6 +12,13 @@ if (process.argv[2] === 'production') {
 
 const { name } = require('ejs');
 const express = require('express');
+const session=require('express-session');
+const MysqlStore=require('express-mysql-session')(session);
+const db = require(__dirname + '/my_modules/mysql2');
+const sessionStore=new MysqlStore({},db);
+const moment=require('moment-timezone');
+const dayjs=require('dayjs');
+
 
 // const multer=require('multer');
 // const upload=multer({dest:'tmp_upload/'});
@@ -20,6 +27,17 @@ const upload=require(__dirname + '/my_modules/img_upload');
 const app = express();
 
 app.set('view engine', 'ejs');
+
+
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: 'fjdeoihdeogifhu',
+    store: sessionStore,
+    cookie:{
+        maxAge: 1200_000
+    }
+}));
 
 // middleware top level
 app.use(express.urlencoded({extended: false}));
@@ -90,6 +108,38 @@ app.get(/^\/09\d{2}\-?\d{3}-?\d{3}$/,(req,res)=>{
     u=u.split('?')[0];
     u=u.split('-').join("");
 res.json({u});
+});
+
+app.get('/try-sess',(req,res)=>{
+    req.session.count=req.session.count || 0;
+    req.session.count++;
+    req.session.hello='哈囉';
+    res.json({
+        count: req.session.count,
+        hello: req.session.hello,
+        session: req.session,
+    })
+});
+
+app.get('/try-moment',(req,res)=>{
+    const fm ='YYYY-MM-DD HH:mm:ss';
+    const dayjs1=dayjs();
+    const dayjs2=dayjs('2023/08/16');
+    const d3=new Date();
+    const moment1 = moment();
+
+    res.json({
+        d1: dayjs1.format(fm),
+        d2: dayjs2.format(fm),
+        d3: d3,
+        m1: moment1.format(fm),
+        m2: moment1.tz('Europe/London').format(fm),
+    });
+});
+
+app.get('/try-db',async (req,res)=>{
+    const [rows] = await db.query('SELECT * FROM address_book LIMIT 2');
+    res.json(rows);
 })
 
 app.use(express.static('public'));

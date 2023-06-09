@@ -5,4 +5,4 @@ router.get('/admin2/:p1?/:p2?',(req,res)=>{
     res.json(req.params);
 });
 
-module
+module.exports=router;

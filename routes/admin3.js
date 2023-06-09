@@ -1,8 +1,22 @@
-const express = require('express');
-const router=express.Router();
 
-router.get('/admin2/:p1?/:p2?',(req,res)=>{
-    res.json(req.params);
+const express = require('express');
+
+const router = express.Router();
+
+router.get('/admin3', (req, res)=>{
+  const {url, baseUrl, originalUrl} = req;
+  res.json({
+    url, 
+    baseUrl, 
+    originalUrl,
+    ...res.locals
+  });
 });
 
-module
+
+router.get('/admin3/:p1?/:p2?', (req, res)=>{
+  res.json(req.params);
+});
+
+
+module.exports = router;
