@@ -1,0 +1,73 @@
+<%- include('../parts/html-head') %> <%- include('../parts/navbar') %>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">新增資料</h5>
+                    <form name="form1" onsubmit="sendData(event)">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">name</label>
+                            <input type="text" class="form-control" id="name" name="name" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">email</label>
+                            <input type="text" class="form-control" id="email" name="email" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">mobile</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthday" class="form-label">birthday</label>
+                            <input type="date" class="form-control" id="birthday" name="birthday" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">gender</label>
+                            <input type="text" class="form-control" id="gender" name="gender" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">password</label>
+                            <input type="password" class="form-control" id="password" name="password" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="pet" class="form-label">pet</label>
+                            <input type="text" class="form-control" id="pet" name="pet" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="level" class="form-label">level</label>
+                            <input type="text" class="form-control" id="level" name="level" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="id" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="id" name="id" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="profile" class="form-label">profile</label>
+                            <input type="text" class="form-control" id="profile" name="profile" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">新增</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../parts/scripts') %>
+<script>
+    function sendData(event) {
+        event.preventDefault();
+
+        const fd = new FormData(document.form1);
+        fetch(`/ab`, {
+            method: "POST",
+            body: fd,
+        })
+            .then((r) => r.json())
+            .then((obj) => {
+                console.log(JSON.stringify(obj, null, 4));
+            });
+    }
+</script>
+
+<%- include('../parts/html-foot') %>

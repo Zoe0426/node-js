@@ -1,0 +1,64 @@
+<%- include('../parts/html-head') %> <%- include('../parts/navbar') %>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <% for(let p=page-5; p<=page+5; p++) if(p>=1 && p<=totalPages){ %>
+                    <li class="page-item <%= p===page ? 'active' : ''%>">
+                        <a class="page-link" href="?page=<%= p %>&keyword=<%= keyword%>"><%= p %></a>
+                    </li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-6">
+            <form class="d-flex" role="search">
+                <input
+                    class="form-control me-2"
+                    type="search"
+                    name="keyword"
+                    value="<%= locals.keyword ? keyword : '' %>"
+                    placeholder="Search"
+                    aria-label="Search"
+                />
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"><i class="fa-regular fa-trash-can"></i></th>
+                        <th scope="col">編號</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">email</th>
+                        <th scope="col">手機</th>
+                        <th scope="col">生日</th>
+                        <th scope="col">性別</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let r of rows){ %>
+                    <tr>
+                        <td>
+                            <a href="javascript:">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </td>
+                        <td><%= r.member_sid %></td>
+                        <td><%= r.member_name %></td>
+                        <td><%= r.member_email %></td>
+                        <td><%= r.member_mobile %></td>
+                        <td><%= toDateString(r.member_birth) %></td>
+                        <td><%= r.member_gender %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<%- include('../parts/scripts') %> <%- include('../parts/html-foot') %>
